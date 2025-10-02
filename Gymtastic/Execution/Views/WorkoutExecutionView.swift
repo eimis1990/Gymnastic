@@ -30,12 +30,14 @@ struct WorkoutExecutionView: View {
                     executionContent
                 } else {
                     ZStack {
-                        Color.lightBackground
+                        Color.appBackground
                             .ignoresSafeArea()
                         Text("Loading...")
+                            .foregroundColor(.textPrimary)
                     }
                 }
             }
+            .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle(workout.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)
@@ -86,7 +88,7 @@ struct WorkoutExecutionView: View {
                    let exercise = item.exercise,
                    let urlString = exercise.youtubeURL,
                    let url = URL(string: urlString) {
-                    YouTubePlayerView(url: url)
+                    YouTubeBottomSheet(url: url)
                 }
             }
             .fullScreenCover(isPresented: $showSummary) {
@@ -110,8 +112,12 @@ struct WorkoutExecutionView: View {
     }
     
     private var executionContent: some View {
-        ScrollView {
-            VStack(spacing: 0) {
+        ZStack {
+            Color.appBackground
+                .ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 0) {
                 // Active Exercise Card with integrated progress
                 if let currentItem = viewModel.currentItem {
                     ActiveExerciseCardView(
@@ -177,9 +183,10 @@ struct WorkoutExecutionView: View {
                     .padding(.top, 20)
                 }
             }
-            .padding(.bottom, 20)
+                .padding(.bottom, 20)
+            }
+            .ignoresSafeArea(edges: .top)
         }
-        .ignoresSafeArea(edges: .top)
         .overlay {
             if viewModel.isPaused {
                 ZStack {

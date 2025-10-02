@@ -14,7 +14,7 @@ struct OnboardingView: View {
     var body: some View {
         ZStack {
             // Background
-            Color.lightBackground
+            Color.appBackground
                 .ignoresSafeArea()
             
             TabView(selection: $currentPage) {
@@ -57,10 +57,10 @@ struct WelcomePage: View {
                         .fill(Color.gymAccent)
                         .frame(width: 8, height: 8)
                     Circle()
-                        .fill(Color.gray.opacity(0.3))
+                        .fill(Color.textTertiary)
                         .frame(width: 8, height: 8)
                     Circle()
-                        .fill(Color.gray.opacity(0.3))
+                        .fill(Color.textTertiary)
                         .frame(width: 8, height: 8)
                 }
             }
@@ -71,6 +71,7 @@ struct WelcomePage: View {
             VStack(spacing: 16) {
                 Text("Wherever You Are")
                     .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
                 
                 HStack(spacing: 4) {
@@ -79,11 +80,12 @@ struct WelcomePage: View {
                         .foregroundColor(.gymAccent)
                     Text("Is Number One")
                         .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(.textPrimary)
                 }
                 
                 Text("There is no instant way to a healthy life")
                     .font(.system(size: 16))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
                     .padding(.top, 8)
@@ -101,10 +103,10 @@ struct WelcomePage: View {
             } label: {
                 Text("Get Started")
                     .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .frame(maxWidth: .infinity)
                     .frame(height: 56)
-                    .background(Color.black)
+                    .background(Color.gymAccent)
                     .cornerRadius(28)
             }
             .padding(.horizontal, 32)

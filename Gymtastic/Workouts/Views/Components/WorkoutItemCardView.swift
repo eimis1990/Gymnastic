@@ -12,11 +12,6 @@ struct WorkoutItemCardView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Drag Handle
-            Image(systemName: "line.3.horizontal")
-                .foregroundColor(.secondary)
-                .font(.title3)
-            
             // Exercise Thumbnail
             if let exercise = item.exercise {
                 if let thumbnailData = exercise.thumbnailData,
@@ -30,11 +25,11 @@ struct WorkoutItemCardView: View {
                 } else {
                     ZStack {
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(Color(.systemGray5))
+                            .fill(Color.border)
                             .frame(width: 50, height: 50)
                         
                         Image(systemName: "dumbbell.fill")
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.textTertiary)
                             .font(.caption)
                     }
                 }
@@ -44,10 +39,11 @@ struct WorkoutItemCardView: View {
                     Text(exercise.title)
                         .font(.subheadline)
                         .fontWeight(.medium)
+                        .foregroundColor(.textPrimary)
                     
                     Text(item.configurationSummary)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.textSecondary)
                     
                     if let rest = item.restBetweenSetsSeconds, rest > 0 {
                         Text("Rest: \(rest)s")
@@ -61,11 +57,11 @@ struct WorkoutItemCardView: View {
                     Text("Deleted Exercise")
                         .font(.subheadline)
                         .fontWeight(.medium)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.textSecondary)
                     
                     Text(item.configurationSummary)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.textTertiary)
                 }
             }
             
@@ -75,14 +71,16 @@ struct WorkoutItemCardView: View {
             Text("#\(item.position + 1)")
                 .font(.caption)
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
+                .foregroundColor(.black)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
-                .background(Color.gymYellow)
+                .background(Color.gymAccent)
                 .cornerRadius(8)
         }
         .padding(12)
-        .borderedCardStyle()
+        .background(Color.cardBackground)
+        .cornerRadius(12)
+        .shadow(color: Color.shadowStandard, radius: 4, x: 0, y: 2)
     }
 }
 

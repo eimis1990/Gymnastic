@@ -209,34 +209,49 @@
 
 ---
 
-## Phase 3.10: App Integration & Polish (T055-T065)
+## Phase 3.10: App Integration & Polish (T055-T072)
 
 ### Navigation & Main App
 - [x] **T055** [INT] Create `Gymtastic/ContentView.swift`: TabView with 2 tabs (Exercises, Workouts), SF Symbol icons (dumbbell.fill, list.bullet.rectangle), NavigationStack for each tab, proper tab labels with .accessibilityLabel() ✅
 
 - [ ] **T056** [INT] Update `Gymtastic/GymtasticApp.swift`: Inject services into environment using @Environment, provide ExerciseService, WorkoutService, ExecutionService instances, ensure ModelContainer is accessible
 
+### Theme & Styling Refinements
+- [x] **T066** [P] [UI] Update theme colors app-wide: Fix `ActiveExerciseCardView.swift` info card background to use `Color.appBackground`, update text colors to use `.textPrimary` and `.textSecondary`, remove glass effect and overlap styling ✅
+
+- [x] **T067** [P] [UI] Fix tab bar styling in `ContentView.swift`: Update selected tab background to use `Color.appBackground` for proper contrast with `cardBackground` container, ensure theme-aware colors throughout ✅
+
+- [x] **T068** [P] [UI] Update workout builder cards: Remove drag handles from `WorkoutItemCardView.swift` and `BreakCardView.swift`, update colors to use theme-aware `cardBackground`, `textPrimary`, `textSecondary`, add proper shadows ✅
+
+- [x] **T069** [P] [UI] Fix background colors in sheets: Update `WorkoutExecutionView.swift`, `CompletionSummaryView.swift`, and `OnboardingView.swift` to use `Color.appBackground` instead of hardcoded colors, ensure proper theme adaptation ✅
+
+- [x] **T070** [P] [UI] Update card styles: Modify `View+Extensions.swift` `cardStyle()` and `borderedCardStyle()` to use `Color.cardBackground` and theme-aware shadows, update `ExerciseCardView.swift` colors ✅
+
+- [x] **T071** [UI] Improve YouTube video button: Reposition button to bottom right corner of exercise image as overlay in `ActiveExerciseCardView.swift`, reduce size (play icon + "Video" text), use compact styling ✅
+
+- [x] **T072** [UI] Upgrade YouTube player: Replace `SFSafariViewController` with `WKWebView` embedded player in `YouTubePlayerView.swift`, create `YouTubeBottomSheet` component with fixed height (320px), extract video ID from various URL formats, update `WorkoutExecutionView.swift` to use bottom sheet presentation ✅
+
 ### Navigation Routes
-- [ ] **T057** [INT] Create navigation handling: Define Route enum (exerciseDetail, createExercise, workoutBuilder, execution), implement .navigationDestination(for: Route.self) in ContentView, handle deep linking
+- [ ] **T073** [INT] Create navigation handling: Define Route enum (exerciseDetail, createExercise, workoutBuilder, execution), implement .navigationDestination(for: Route.self) in ContentView, handle deep linking
 
 ### Accessibility
-- [ ] **T058** [P] Add accessibility labels: Add .accessibilityLabel() to all buttons, images, icons in all views, add .accessibilityHint() for non-obvious actions, add .accessibilityValue() for progress indicators, ensure minimum 44pt touch targets
+- [ ] **T074** [P] Add accessibility labels: Add .accessibilityLabel() to all buttons, images, icons in all views, add .accessibilityHint() for non-obvious actions, add .accessibilityValue() for progress indicators, ensure minimum 44pt touch targets
 
-- [ ] **T059** [P] Test with VoiceOver: Enable VoiceOver, test create exercise flow, test workout builder flow, test execution flow, verify all elements announced correctly
+- [ ] **T075** [P] Test with VoiceOver: Enable VoiceOver, test create exercise flow, test workout builder flow, test execution flow, verify all elements announced correctly
 
-- [ ] **T060** [P] Test Dynamic Type: Enable largest text size in iOS settings, verify all screens layout correctly, verify no text truncation, verify readable font scaling
+- [ ] **T076** [P] Test Dynamic Type: Enable largest text size in iOS settings, verify all screens layout correctly, verify no text truncation, verify readable font scaling
 
 ### UI Tests (Critical Flows)
-- [ ] **T061** [P] [TEST] Create `GymtasticUITests/ExerciseFlowUITests.swift`: UI test for creating exercise (tap +, fill form, save), viewing exercise detail, editing exercise, deleting exercise, searching exercises, use accessibility identifiers
+- [ ] **T077** [P] [TEST] Create `GymtasticUITests/ExerciseFlowUITests.swift`: UI test for creating exercise (tap +, fill form, save), viewing exercise detail, editing exercise, deleting exercise, searching exercises, use accessibility identifiers
 
-- [ ] **T062** [P] [TEST] Create `GymtasticUITests/WorkoutBuilderUITests.swift`: UI test for creating workout, adding exercises, adding breaks, reordering via drag-drop (use .press(forDuration:thenDragTo:)), removing items, saving workout
+- [ ] **T078** [P] [TEST] Create `GymtasticUITests/WorkoutBuilderUITests.swift`: UI test for creating workout, adding exercises, adding breaks, reordering via drag-drop (use .press(forDuration:thenDragTo:)), removing items, saving workout
 
-- [ ] **T063** [P] [TEST] Create `GymtasticUITests/WorkoutExecutionUITests.swift`: UI test for starting workout, advancing through exercises, viewing video (verify SFSafariViewController appears), pausing/resuming, completing workout, viewing summary
+- [ ] **T079** [P] [TEST] Create `GymtasticUITests/WorkoutExecutionUITests.swift`: UI test for starting workout, advancing through exercises, viewing video (verify embedded YouTube player appears in bottom sheet), pausing/resuming, completing workout, viewing summary
 
 ### Performance & Validation
-- [ ] **T064** [INT] Performance optimization: Add lazy loading to exercise list thumbnails, implement image caching strategy, add loading indicators for async operations, profile with Instruments (Allocations, Time Profiler), verify 60fps scrolling, verify <1s app launch
+- [ ] **T080** [INT] Performance optimization: Add lazy loading to exercise list thumbnails, implement image caching strategy, add loading indicators for async operations, profile with Instruments (Allocations, Time Profiler), verify 60fps scrolling, verify <1s app launch
 
-- [ ] **T065** [P] Manual validation using `quickstart.md`: Execute all 3 user stories step-by-step, validate all acceptance criteria, test all edge cases and error handling, verify accessibility compliance, verify Dark Mode support, document any issues found
+- [ ] **T081** [P] Manual validation using `quickstart.md`: Execute all 3 user stories step-by-step, validate all acceptance criteria, test all edge cases and error handling, verify accessibility compliance, verify Dark Mode support, document any issues found
 
 ---
 
@@ -443,8 +458,10 @@ Upon completion of all 65 tasks:
 ---
 
 **Generated**: 2025-10-01  
-**Total Tasks**: 65  
-**Estimated Duration**: 15-20 development days (single developer)  
+**Updated**: 2025-10-02  
+**Total Tasks**: 81  
+**Completed**: 72  
+**Estimated Duration**: 18-22 development days (single developer)  
 **Parallelization**: Up to 6 tasks simultaneously in optimal batches
 
 ---

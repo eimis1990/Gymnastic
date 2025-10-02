@@ -51,8 +51,8 @@ struct WorkoutTimelineView: View {
                         Label("Add Exercise", systemImage: "plus.circle.fill")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.gymYellow.opacity(0.2))
-                            .foregroundColor(.gymYellow)
+                            .background(Color.gymAccent.opacity(0.2))
+                            .foregroundColor(.textPrimary)
                             .cornerRadius(12)
                     }
                     
@@ -60,8 +60,8 @@ struct WorkoutTimelineView: View {
                         Label("Add Break", systemImage: "timer")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.blue.opacity(0.2))
-                            .foregroundColor(.blue)
+                            .background(Color.info.opacity(0.2))
+                            .foregroundColor(.textPrimary)
                             .cornerRadius(12)
                     }
                 }

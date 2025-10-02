@@ -17,7 +17,7 @@ struct CompletionSummaryView: View {
         ZStack {
             // Background gradient
             LinearGradient(
-                colors: [Color.gymAccent.opacity(0.3), Color.lightBackground],
+                colors: [Color.gymAccent.opacity(0.3), Color.appBackground],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -46,10 +46,11 @@ struct CompletionSummaryView: View {
                         Text(summary.wasCompleted ? "Workout Complete!" : "Workout Stopped")
                             .font(.largeTitle)
                             .fontWeight(.bold)
+                            .foregroundColor(.textPrimary)
                         
                         Text(summary.workoutTitle)
                             .font(.title3)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.textSecondary)
                     }
                     .multilineTextAlignment(.center)
                     
@@ -95,6 +96,7 @@ struct CompletionSummaryView: View {
                     Text(motivationalMessage)
                         .font(.title3)
                         .fontWeight(.medium)
+                        .foregroundColor(.textPrimary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                         .padding(.vertical, 8)
@@ -149,16 +151,17 @@ struct StatCard: View {
             Text(value)
                 .font(.title2)
                 .fontWeight(.bold)
+                .foregroundColor(.textPrimary)
             
             Text(label)
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundColor(.textSecondary)
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color.lightCard)
+        .background(Color.cardBackground)
         .cornerRadius(12)
-        .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
+        .shadow(color: Color.shadowStandard, radius: 8, x: 0, y: 2)
     }
 }
 

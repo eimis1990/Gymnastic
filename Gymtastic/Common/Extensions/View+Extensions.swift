@@ -48,22 +48,23 @@ extension View {
     // MARK: - Card Style
     
     /// Applies a card style with background and shadow
-    func cardStyle(backgroundColor: Color = .lightCard) -> some View {
+    func cardStyle(backgroundColor: Color = .cardBackground) -> some View {
         self
             .background(backgroundColor)
             .cornerRadius(12)
-            .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
+            .shadow(color: Color.shadowStandard, radius: 8, x: 0, y: 2)
     }
     
     /// Applies a bordered card style
     func borderedCardStyle() -> some View {
         self
-            .background(Color.lightCard)
+            .background(Color.cardBackground)
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.gray.opacity(0.15), lineWidth: 1)
+                    .stroke(Color.border, lineWidth: 1)
             )
+            .shadow(color: Color.shadowStandard, radius: 4, x: 0, y: 2)
     }
     
     // MARK: - Exercise Card Shadow

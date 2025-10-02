@@ -10,14 +10,13 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.colorScheme) private var colorScheme
     @State private var selectedTab = 0
     
     var body: some View {
         VStack(spacing: 0) {
             // Content
             ZStack {
-                Color.lightBackground
+                Color.appBackground
                     .ignoresSafeArea()
                 
                 Group {
@@ -33,7 +32,7 @@ struct ContentView: View {
             }
             
             // Custom Tab Bar
-            CustomTabBar(selectedTab: $selectedTab, colorScheme: colorScheme)
+            CustomTabBar(selectedTab: $selectedTab)
         }
         .ignoresSafeArea(.keyboard)
     }
@@ -43,24 +42,6 @@ struct ContentView: View {
 
 struct CustomTabBar: View {
     @Binding var selectedTab: Int
-    let colorScheme: ColorScheme
-    
-    // Colors based on theme
-    private var backgroundColor: Color {
-        colorScheme == .light ? Color(hex: "1A1F25") : Color(hex: "F7F6FB")
-    }
-    
-    private var selectedBackgroundColor: Color {
-        colorScheme == .light ? Color(hex: "3A3F45") : Color.white
-    }
-    
-    private var selectedTextColor: Color {
-        colorScheme == .light ? .white : Color(hex: "1A1F25")
-    }
-    
-    private var unselectedTextColor: Color {
-        colorScheme == .light ? Color(hex: "F7F6FB") : Color(hex: "3A3F45")
-    }
     
     var body: some View {
         HStack(spacing: 8) {
@@ -68,10 +49,7 @@ struct CustomTabBar: View {
             TabBarButton(
                 icon: "dumbbell.fill",
                 title: "Exercises",
-                isSelected: selectedTab == 0,
-                selectedBackgroundColor: selectedBackgroundColor,
-                selectedTextColor: selectedTextColor,
-                unselectedTextColor: unselectedTextColor
+                isSelected: selectedTab == 0
             ) {
                 selectedTab = 0
             }
@@ -80,18 +58,16 @@ struct CustomTabBar: View {
             TabBarButton(
                 icon: "list.bullet.rectangle.fill",
                 title: "Workouts",
-                isSelected: selectedTab == 1,
-                selectedBackgroundColor: selectedBackgroundColor,
-                selectedTextColor: selectedTextColor,
-                unselectedTextColor: unselectedTextColor
+                isSelected: selectedTab == 1
             ) {
                 selectedTab = 1
             }
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 8)
-        .background(backgroundColor)
+        .background(Color.cardBackground)
         .cornerRadius(40)
+        .shadow(color: Color.shadowStandard, radius: 8, x: 0, y: -2)
         .padding(.horizontal, 20)
         .padding(.bottom, 20)
     }
@@ -103,9 +79,6 @@ struct TabBarButton: View {
     let icon: String
     let title: String
     let isSelected: Bool
-    let selectedBackgroundColor: Color
-    let selectedTextColor: Color
-    let unselectedTextColor: Color
     let action: () -> Void
     
     var body: some View {
@@ -119,11 +92,11 @@ struct TabBarButton: View {
                         .font(.system(size: 15, weight: .medium))
                 }
             }
-            .foregroundColor(isSelected ? selectedTextColor : unselectedTextColor)
+            .foregroundColor(isSelected ? .textPrimary : .textSecondary)
             .frame(maxWidth: .infinity)
             .frame(height: 50)
             .background(
-                isSelected ? selectedBackgroundColor : Color.clear
+                isSelected ? Color.appBackground : Color.clear
             )
             .cornerRadius(25)
         }
@@ -160,7 +133,7 @@ struct ExercisesTabView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
             }
-            .background(Color.lightBackground)
+            .background(Color.appBackground)
             .searchable(text: $searchText, prompt: "Search exercises")
             .navigationTitle("Exercises")
             .toolbar {
@@ -238,7 +211,7 @@ struct WorkoutsTabView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
             }
-            .background(Color.lightBackground)
+            .background(Color.appBackground)
             .navigationTitle("Workouts")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -291,15 +264,16 @@ struct EmptyStateView: View {
         VStack(spacing: 16) {
             Image(systemName: icon)
                 .font(.system(size: 60))
-                .foregroundColor(.secondary)
+                .foregroundColor(.textSecondary)
             
             Text(title)
                 .font(.title2)
                 .fontWeight(.semibold)
+                .foregroundColor(.textPrimary)
             
             Text(message)
                 .font(.body)
-                .foregroundColor(.secondary)
+                .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .padding()
@@ -316,21 +290,24 @@ struct WorkoutCardView: View {
             Text(workout.title)
                 .font(.headline)
                 .fontWeight(.semibold)
+                .foregroundColor(.textPrimary)
             
             HStack {
                 Label("\(workout.items.count) exercises", systemImage: "dumbbell.fill")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.textSecondary)
                 
                 Spacer()
                 
                 Label(workout.estimatedDurationFormatted, systemImage: "clock")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.textSecondary)
             }
         }
         .padding()
-        .borderedCardStyle()
+        .background(Color.cardBackground)
+        .cornerRadius(12)
+        .shadow(color: Color.shadowStandard, radius: 4, x: 0, y: 2)
     }
 }
 

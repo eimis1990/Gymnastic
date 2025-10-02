@@ -221,7 +221,7 @@ struct ExerciseSelectionSheet: View {
                                 Spacer()
                                 
                                 Image(systemName: "plus.circle.fill")
-                                    .foregroundColor(.gymYellow)
+                                    .foregroundColor(.gymAccent)
                             }
                         }
                     }

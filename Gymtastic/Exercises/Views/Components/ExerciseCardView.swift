@@ -27,12 +27,12 @@ struct ExerciseCardView: View {
                 // Placeholder
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(.systemGray5))
+                        .fill(Color.border)
                         .frame(width: 80, height: 80)
                     
                     Image(systemName: "dumbbell.fill")
                         .font(.title2)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.textTertiary)
                 }
             }
             
@@ -40,7 +40,7 @@ struct ExerciseCardView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(exercise.title)
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.textPrimary)
                 
                 // Muscle Groups
                 if !exercise.muscleGroupsEnum.isEmpty {
@@ -52,7 +52,7 @@ struct ExerciseCardView: View {
                         if exercise.muscleGroupsEnum.count > 2 {
                             Text("+\(exercise.muscleGroupsEnum.count - 2)")
                                 .font(.caption2)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.textSecondary)
                         }
                     }
                 }
@@ -64,7 +64,7 @@ struct ExerciseCardView: View {
             if showChevron {
                 Image(systemName: "chevron.right")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.textSecondary)
             }
         }
         .padding(16)
@@ -94,7 +94,7 @@ struct MuscleGroupTag: View {
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
         .background(Color.gymAccent.opacity(0.2))
-        .foregroundColor(.primary)
+        .foregroundColor(.textPrimary)
         .cornerRadius(6)
     }
 }

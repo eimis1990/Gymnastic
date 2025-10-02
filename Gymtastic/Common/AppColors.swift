@@ -16,9 +16,9 @@ extension Color {
     
     /// Primary accent color - Lime Green
     /// Used for: Primary buttons, highlights, active states, CTAs
-    /// Light Mode: #C8F065 | Dark Mode: #C8F065
-    static let gymAccent = Color(hex: "C8F065")
-    
+    /// Light Mode: #CD222D | Dark Mode: #CD222D
+    static let gymAccent = Color(hex: "CD222D")
+
     /// Deprecated alias for gymAccent (maintained for backward compatibility)
     @available(*, deprecated, renamed: "gymAccent", message: "Use gymAccent instead")
     static let gymYellow = Color.gymAccent
@@ -26,17 +26,17 @@ extension Color {
     // MARK: - Background Colors
     
     /// Main app background color - adapts to theme
-    /// Light Mode: #F7F6FB (Soft purple-gray) | Dark Mode: #1A1F25 (Deep charcoal)
+    /// Light Mode: #F7F6FB (Soft purple-gray) | Dark Mode: #0E0E0E (Deep charcoal)
     /// Used for: Main screen backgrounds, overall app background
     static var appBackground: Color {
-        Color(light: Color(hex: "F7F6FB"), dark: Color(hex: "1A1F25"))
+        Color(light: Color(hex: "F7F6FB"), dark: Color(hex: "0E0E0E"))
     }
     
     /// Light theme background color
     static let lightBackground = Color(hex: "F7F6FB")
     
     /// Dark theme background color
-    static let darkBackground = Color(hex: "1A1F25")
+    static let darkBackground = Color(hex: "0E0E0E")
     
     // MARK: - Surface/Card Colors
     
@@ -141,9 +141,9 @@ extension Color {
     // MARK: - Tab Bar Colors (Custom Implementation)
     
     /// Tab bar background - inverted from main background
-    /// Light Mode: #1A1F25 (Dark) | Dark Mode: #F7F6FB (Light)
+    /// Light Mode: #0E0E0E (Dark) | Dark Mode: #F7F6FB (Light)
     static var tabBarBackground: Color {
-        Color(light: Color(hex: "1A1F25"), dark: Color(hex: "F7F6FB"))
+        Color(light: Color(hex: "0E0E0E"), dark: Color(hex: "F7F6FB"))
     }
     
     /// Tab bar selected item background
@@ -153,9 +153,9 @@ extension Color {
     }
     
     /// Tab bar selected text color
-    /// Light Mode: White | Dark Mode: #1A1F25 (Dark)
+    /// Light Mode: White | Dark Mode: #0E0E0E (Dark)
     static var tabBarSelectedText: Color {
-        Color(light: .white, dark: Color(hex: "1A1F25"))
+        Color(light: .white, dark: Color(hex: "0E0E0E"))
     }
     
     /// Tab bar unselected text color
@@ -252,7 +252,7 @@ extension Color {
             
             // Tab Bar Colors
             ColorSection(title: "Tab Bar (Inverted)") {
-                ColorSwatch(name: "tabBarBackground", color: Color(hex: "1A1F25"), hex: "#1A1F25")
+                ColorSwatch(name: "tabBarBackground", color: Color(hex: "0E0E0E"), hex: "#0E0E0E")
                 ColorSwatch(name: "tabBarSelectedBg", color: Color(hex: "3A3F45"), hex: "#3A3F45")
                 ColorSwatch(name: "tabBarSelectedText", color: .white, hex: "White")
                 ColorSwatch(name: "tabBarUnselectedText", color: Color(hex: "F7F6FB"), hex: "#F7F6FB")
@@ -274,7 +274,7 @@ extension Color {
             
             // Backgrounds
             ColorSection(title: "Backgrounds") {
-                ColorSwatch(name: "appBackground", color: .darkBackground, hex: "#1A1F25")
+                ColorSwatch(name: "appBackground", color: .darkBackground, hex: "#0E0E0E")
                 ColorSwatch(name: "cardBackground", color: .darkCard, hex: "#3A3F45")
             }
             
@@ -297,7 +297,7 @@ extension Color {
             ColorSection(title: "Tab Bar (Inverted)") {
                 ColorSwatch(name: "tabBarBackground", color: Color(hex: "F7F6FB"), hex: "#F7F6FB")
                 ColorSwatch(name: "tabBarSelectedBg", color: .white, hex: "White")
-                ColorSwatch(name: "tabBarSelectedText", color: Color(hex: "1A1F25"), hex: "#1A1F25")
+                ColorSwatch(name: "tabBarSelectedText", color: Color(hex: "0E0E0E"), hex: "#0E0E0E")
                 ColorSwatch(name: "tabBarUnselectedText", color: Color(hex: "3A3F45"), hex: "#3A3F45")
             }
         }

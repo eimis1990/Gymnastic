@@ -12,19 +12,14 @@ struct BreakCardView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Drag Handle
-            Image(systemName: "line.3.horizontal")
-                .foregroundColor(.secondary)
-                .font(.title3)
-            
             // Break Icon
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.blue.opacity(0.1))
+                    .fill(Color.info.opacity(0.1))
                     .frame(width: 50, height: 50)
                 
                 Image(systemName: "timer")
-                    .foregroundColor(.blue)
+                    .foregroundColor(.info)
                     .font(.title3)
             }
             
@@ -33,10 +28,11 @@ struct BreakCardView: View {
                 Text("Break")
                     .font(.subheadline)
                     .fontWeight(.medium)
+                    .foregroundColor(.textPrimary)
                 
                 Text(breakItem.formattedDuration)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.textSecondary)
             }
             
             Spacer()
@@ -48,16 +44,17 @@ struct BreakCardView: View {
                 .foregroundColor(.white)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
-                .background(Color.blue)
+                .background(Color.info)
                 .cornerRadius(8)
         }
         .padding(12)
-        .background(Color.blue.opacity(0.05))
+        .background(Color.cardBackground)
         .cornerRadius(12)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.blue.opacity(0.3), lineWidth: 1)
+                .stroke(Color.info.opacity(0.3), lineWidth: 1)
         )
+        .shadow(color: Color.shadowStandard, radius: 4, x: 0, y: 2)
     }
 }
 

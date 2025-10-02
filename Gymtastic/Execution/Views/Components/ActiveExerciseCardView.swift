@@ -37,24 +37,44 @@ struct ActiveExerciseCardView: View {
             } else {
                 VStack(spacing: 0) {
                     // Exercise Image - Full Width, 4:3 aspect ratio
-                    GeometryReader { geometry in
-                        if let imageData = exercise.imageData,
-                           let uiImage = UIImage(data: imageData) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: geometry.size.width, height: geometry.size.width * 0.75) // 4:3 ratio
-                                .clipped()
-                        } else {
-                            // Placeholder if no image
-                            Rectangle()
-                                .fill(Color.gray.opacity(0.2))
-                                .frame(width: geometry.size.width, height: geometry.size.width * 0.75) // 4:3 ratio
-                                .overlay(
-                                    Image(systemName: "photo")
-                                        .font(.system(size: 60))
-                                        .foregroundColor(.gray)
-                                )
+                    ZStack(alignment: .bottomTrailing) {
+                        GeometryReader { geometry in
+                            if let imageData = exercise.imageData,
+                               let uiImage = UIImage(data: imageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: geometry.size.width, height: geometry.size.width * 0.75) // 4:3 ratio
+                                    .clipped()
+                            } else {
+                                // Placeholder if no image
+                                Rectangle()
+                                    .fill(Color.gray.opacity(0.2))
+                                    .frame(width: geometry.size.width, height: geometry.size.width * 0.75) // 4:3 ratio
+                                    .overlay(
+                                        Image(systemName: "photo")
+                                            .font(.system(size: 60))
+                                            .foregroundColor(.gray)
+                                    )
+                            }
+                        }
+                        
+                        // Video Button overlay (bottom right)
+                        if exercise.youtubeURL != nil {
+                            Button(action: onSeeVideo) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "play.fill")
+                                        .font(.system(size: 12, weight: .bold))
+                                    Text("Video")
+                                        .font(.system(size: 14, weight: .semibold))
+                                }
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(Color.red)
+                                .cornerRadius(8)
+                            }
+                            .padding(12)
                         }
                     }
                     .frame(height: UIScreen.main.bounds.width * 0.75) // Match the 4:3 ratio height for full width
@@ -65,13 +85,13 @@ struct ActiveExerciseCardView: View {
                         Text(exercise.title)
                             .font(.title2)
                             .fontWeight(.bold)
-                            .foregroundColor(.white)
+                            .foregroundColor(.textPrimary)
                         
                         // Description if available
                         if let description = exercise.exerciseDescription, !description.isEmpty {
                             Text(description)
                                 .font(.subheadline)
-                                .foregroundColor(.white.opacity(0.8))
+                                .foregroundColor(.textSecondary)
                                 .lineLimit(2)
                         }
                         
@@ -94,13 +114,13 @@ struct ActiveExerciseCardView: View {
                                         .fontWeight(.bold)
                                     Text("reps")
                                         .font(.subheadline)
-                                        .foregroundColor(.white.opacity(0.7))
+                                        .foregroundColor(.textSecondary)
                                 }
                                 
                                 if let totalSets = item.sets {
                                     // Separator
                                     Circle()
-                                        .fill(Color.white.opacity(0.5))
+                                        .fill(Color.textSecondary)
                                         .frame(width: 4, height: 4)
                                     
                                     // Sets
@@ -110,14 +130,14 @@ struct ActiveExerciseCardView: View {
                                             .fontWeight(.bold)
                                         Text("sets")
                                             .font(.subheadline)
-                                            .foregroundColor(.white.opacity(0.7))
+                                            .foregroundColor(.textSecondary)
                                     }
                                 }
                                 
                                 if let rest = item.restBetweenSetsSeconds, rest > 0 {
                                     // Separator
                                     Circle()
-                                        .fill(Color.white.opacity(0.5))
+                                        .fill(Color.textSecondary)
                                         .frame(width: 4, height: 4)
                                     
                                     // Rest
@@ -127,7 +147,7 @@ struct ActiveExerciseCardView: View {
                                             .fontWeight(.bold)
                                         Text("rest")
                                             .font(.subheadline)
-                                            .foregroundColor(.white.opacity(0.7))
+                                            .foregroundColor(.textSecondary)
                                     }
                                 }
                                 
@@ -139,23 +159,16 @@ struct ActiveExerciseCardView: View {
                                         .fontWeight(.bold)
                                     Text("duration")
                                         .font(.subheadline)
-                                        .foregroundColor(.white.opacity(0.7))
+                                        .foregroundColor(.textSecondary)
                                 }
                             }
                         }
-                        .foregroundColor(.white)
+                        .foregroundColor(.textPrimary)
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 20)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(
-                        Rectangle()
-                            .fill(Color.black.opacity(0.75))
-                            .background(
-                                Rectangle()
-                                    .fill(.ultraThinMaterial)
-                            )
-                    )
+                    .background(Color.appBackground)
                     
                     // Custom Progress Line
                     VStack(spacing: 12) {
@@ -187,25 +200,6 @@ struct ActiveExerciseCardView: View {
                                 .foregroundColor(.secondary)
                         }
                         .padding(.horizontal, 20)
-                    }
-                    .padding(.top, 20)
-                    
-                    // See Video Button
-                    if exercise.youtubeURL != nil {
-                        Button(action: onSeeVideo) {
-                            HStack {
-                                Image(systemName: "play.circle.fill")
-                                Text("See Video")
-                                    .fontWeight(.semibold)
-                            }
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.red)
-                            .cornerRadius(12)
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.top, 16)
                     }
                 }
             }
