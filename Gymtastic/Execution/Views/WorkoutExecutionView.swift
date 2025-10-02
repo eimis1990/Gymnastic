@@ -25,26 +25,29 @@ struct WorkoutExecutionView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                // Background
-                Color.lightBackground
-                    .ignoresSafeArea()
-                
+            Group {
                 if let _ = viewModel.session {
                     executionContent
                 } else {
-                    Text("Loading...")
+                    ZStack {
+                        Color.lightBackground
+                            .ignoresSafeArea()
+                        Text("Loading...")
+                    }
                 }
             }
             .navigationTitle(workout.title)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         showStopAlert = true
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.red)
+                            .foregroundColor(.white)
+                            .font(.title3)
                     }
                 }
                 
@@ -56,12 +59,14 @@ struct WorkoutExecutionView: View {
                             }
                         }
                         .fontWeight(.semibold)
+                        .foregroundColor(.white)
                     } else if viewModel.isActive {
                         Button("Pause") {
                             Task {
                                 await viewModel.pauseWorkout()
                             }
                         }
+                        .foregroundColor(.white)
                     }
                 }
             }
@@ -106,39 +111,21 @@ struct WorkoutExecutionView: View {
     
     private var executionContent: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // Progress Bar
-                if let progress = viewModel.progress {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text(progress.progressText)
-                                .font(.headline)
-                            
-                            Spacer()
-                            
-                            Text(viewModel.elapsedTime)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        ProgressView(value: progress.percentComplete)
-                            .tint(.gymAccent)
-                    }
-                    .padding(.horizontal)
-                }
-                
-                // Active Exercise Card
+            VStack(spacing: 0) {
+                // Active Exercise Card with integrated progress
                 if let currentItem = viewModel.currentItem {
                     ActiveExerciseCardView(
                         item: currentItem,
                         currentSet: viewModel.session?.currentSet,
                         isOnSetBreak: viewModel.session?.isOnSetBreak ?? false,
                         remainingBreakTime: viewModel.session?.remainingBreakTime,
-                        remainingRegularBreakTime: viewModel.session?.remainingRegularBreakTime
+                        remainingRegularBreakTime: viewModel.session?.remainingRegularBreakTime,
+                        progressText: viewModel.progress?.progressText ?? "",
+                        elapsedTime: viewModel.elapsedTime,
+                        percentComplete: viewModel.progress?.percentComplete ?? 0
                     ) {
                         showVideoPlayer = true
                     }
-                    .padding(.horizontal)
                     .id(timerTick) // Force update every second for countdown
                 }
                 
@@ -166,6 +153,7 @@ struct WorkoutExecutionView: View {
                         .cornerRadius(12)
                     }
                     .padding(.horizontal)
+                    .padding(.top, 20)
                     .disabled(viewModel.isPaused)
                 }
                 
@@ -186,10 +174,12 @@ struct WorkoutExecutionView: View {
                         }
                         .padding(.horizontal)
                     }
+                    .padding(.top, 20)
                 }
             }
-            .padding(.vertical)
+            .padding(.bottom, 20)
         }
+        .ignoresSafeArea(edges: .top)
         .overlay {
             if viewModel.isPaused {
                 ZStack {

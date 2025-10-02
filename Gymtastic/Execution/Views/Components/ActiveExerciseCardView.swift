@@ -13,27 +13,18 @@ struct ActiveExerciseCardView: View {
     let isOnSetBreak: Bool
     let remainingBreakTime: Int?
     let remainingRegularBreakTime: Int?
+    let progressText: String
+    let elapsedTime: String
+    let percentComplete: Double
     let onSeeVideo: () -> Void
     
     var body: some View {
-        VStack(spacing: 16) {
-            switch item {
-            case .exercise(let workoutItem):
-                exerciseContent(workoutItem)
-            case .break(let breakItem):
-                breakContent(breakItem)
-            }
+        switch item {
+        case .exercise(let workoutItem):
+            exerciseContent(workoutItem)
+        case .break(let breakItem):
+            breakContent(breakItem)
         }
-        .padding(20)
-        .background(
-            LinearGradient(
-                colors: [Color.gymYellow.opacity(0.1), Color.gymYellow.opacity(0.05)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
     }
     
     @ViewBuilder
@@ -44,109 +35,177 @@ struct ActiveExerciseCardView: View {
             if isOnSetBreak, let remainingTime = remainingBreakTime {
                 setBreakView(duration: remainingTime)
             } else {
-                // Normal exercise view
-                if let imageData = exercise.imageData,
-                   let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: 200)
-                        .clipped()
-                        .cornerRadius(12)
-                }
-                
-                // Exercise Title
-                Text(exercise.title)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                
-                // Current Set Indicator
-                if let set = currentSet, let totalSets = item.sets {
-                    Text("Set \(set) of \(totalSets)")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.gymYellow)
-                        .padding(.vertical, 4)
-                }
-                
-                // Configuration
-                HStack(spacing: 20) {
-                    switch item.configurationType {
-                    case .repetitions:
-                        VStack {
-                            Image(systemName: "repeat")
-                                .font(.title2)
-                            Text("\(item.repsPerSet ?? 0)")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                            Text("Reps")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        if let totalSets = item.sets {
-                            Divider()
-                                .frame(height: 50)
-                            
-                            VStack {
-                                Image(systemName: "square.stack.3d.up")
-                                    .font(.title2)
-                                Text("\(totalSets)")
-                                    .font(.title3)
-                                    .fontWeight(.semibold)
-                                Text("Total Sets")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                        
-                        if let rest = item.restBetweenSetsSeconds, rest > 0 {
-                            Divider()
-                                .frame(height: 50)
-                            
-                            VStack {
-                                Image(systemName: "timer")
-                                    .font(.title2)
-                                Text("\(rest)s")
-                                    .font(.title3)
-                                    .fontWeight(.semibold)
-                                Text("Rest")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                        
-                    case .time:
-                        VStack {
-                            Image(systemName: "clock")
-                                .font(.title2)
-                            Text("\(item.durationSeconds ?? 0)s")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                            Text("Duration")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                VStack(spacing: 0) {
+                    // Exercise Image - Full Width, 4:3 aspect ratio
+                    GeometryReader { geometry in
+                        if let imageData = exercise.imageData,
+                           let uiImage = UIImage(data: imageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: geometry.size.width, height: geometry.size.width * 0.75) // 4:3 ratio
+                                .clipped()
+                        } else {
+                            // Placeholder if no image
+                            Rectangle()
+                                .fill(Color.gray.opacity(0.2))
+                                .frame(width: geometry.size.width, height: geometry.size.width * 0.75) // 4:3 ratio
+                                .overlay(
+                                    Image(systemName: "photo")
+                                        .font(.system(size: 60))
+                                        .foregroundColor(.gray)
+                                )
                         }
                     }
-                }
-                .padding()
-                .background(Color(.systemBackground))
-                .cornerRadius(12)
-                
-                // See Video Button
-                if exercise.youtubeURL != nil {
-                    Button(action: onSeeVideo) {
-                        HStack {
-                            Image(systemName: "play.circle.fill")
-                            Text("See Video")
+                    .frame(height: UIScreen.main.bounds.width * 0.75) // Match the 4:3 ratio height for full width
+                    
+                    // Overlapping info card - Full Width (outside image container)
+                    VStack(alignment: .leading, spacing: 12) {
+                        // Title
+                        Text(exercise.title)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        
+                        // Description if available
+                        if let description = exercise.exerciseDescription, !description.isEmpty {
+                            Text(description)
+                                .font(.subheadline)
+                                .foregroundColor(.white.opacity(0.8))
+                                .lineLimit(2)
+                        }
+                        
+                        // Set Indicator
+                        if let set = currentSet, let totalSets = item.sets {
+                            Text("Set \(set) of \(totalSets)")
+                                .font(.headline)
                                 .fontWeight(.semibold)
+                                .foregroundColor(.gymAccent)
+                        }
+                        
+                        // Stats
+                        HStack(spacing: 16) {
+                            switch item.configurationType {
+                            case .repetitions:
+                                // Reps
+                                HStack(spacing: 4) {
+                                    Text("\(item.repsPerSet ?? 0)")
+                                        .font(.title3)
+                                        .fontWeight(.bold)
+                                    Text("reps")
+                                        .font(.subheadline)
+                                        .foregroundColor(.white.opacity(0.7))
+                                }
+                                
+                                if let totalSets = item.sets {
+                                    // Separator
+                                    Circle()
+                                        .fill(Color.white.opacity(0.5))
+                                        .frame(width: 4, height: 4)
+                                    
+                                    // Sets
+                                    HStack(spacing: 4) {
+                                        Text("\(totalSets)")
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                        Text("sets")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.7))
+                                    }
+                                }
+                                
+                                if let rest = item.restBetweenSetsSeconds, rest > 0 {
+                                    // Separator
+                                    Circle()
+                                        .fill(Color.white.opacity(0.5))
+                                        .frame(width: 4, height: 4)
+                                    
+                                    // Rest
+                                    HStack(spacing: 4) {
+                                        Text("\(rest)s")
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                        Text("rest")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.7))
+                                    }
+                                }
+                                
+                            case .time:
+                                // Duration
+                                HStack(spacing: 4) {
+                                    Text("\(item.durationSeconds ?? 0)s")
+                                        .font(.title3)
+                                        .fontWeight(.bold)
+                                    Text("duration")
+                                        .font(.subheadline)
+                                        .foregroundColor(.white.opacity(0.7))
+                                }
+                            }
                         }
                         .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.red)
-                        .cornerRadius(12)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(
+                        Rectangle()
+                            .fill(Color.black.opacity(0.75))
+                            .background(
+                                Rectangle()
+                                    .fill(.ultraThinMaterial)
+                            )
+                    )
+                    
+                    // Custom Progress Line
+                    VStack(spacing: 12) {
+                        // Progress bar - 10px height
+                        GeometryReader { geometry in
+                            ZStack(alignment: .leading) {
+                                // Background
+                                Rectangle()
+                                    .fill(Color.gray.opacity(0.2))
+                                    .frame(height: 10)
+                                
+                                // Progress fill
+                                Rectangle()
+                                    .fill(Color.gymAccent)
+                                    .frame(width: geometry.size.width * percentComplete, height: 10)
+                            }
+                        }
+                        .frame(height: 10)
+                        
+                        // Text below the line
+                        HStack {
+                            Text(progressText)
+                                .font(.headline)
+                            
+                            Spacer()
+                            
+                            Text(elapsedTime)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.horizontal, 20)
+                    }
+                    .padding(.top, 20)
+                    
+                    // See Video Button
+                    if exercise.youtubeURL != nil {
+                        Button(action: onSeeVideo) {
+                            HStack {
+                                Image(systemName: "play.circle.fill")
+                                Text("See Video")
+                                    .fontWeight(.semibold)
+                            }
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.red)
+                            .cornerRadius(12)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 16)
                     }
                 }
             }
@@ -176,12 +235,22 @@ struct ActiveExerciseCardView: View {
             if let set = currentSet {
                 Text("Get ready for Set \(set + 1)")
                     .font(.headline)
-                    .foregroundColor(.gymYellow)
+                    .foregroundColor(.gymAccent)
                     .padding(.top, 8)
             }
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 40)
+        .padding(.horizontal, 24)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.info.opacity(0.1))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.info.opacity(0.3), lineWidth: 2)
+        )
+        .padding(.horizontal, 20)
     }
     
     @ViewBuilder
@@ -217,6 +286,16 @@ struct ActiveExerciseCardView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 40)
+        .padding(.horizontal, 24)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.info.opacity(0.1))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.info.opacity(0.3), lineWidth: 2)
+        )
+        .padding(.horizontal, 20)
     }
 }
 
@@ -238,6 +317,9 @@ struct ActiveExerciseCardView: View {
             isOnSetBreak: false,
             remainingBreakTime: nil,
             remainingRegularBreakTime: nil,
+            progressText: "Exercise 1 of 4",
+            elapsedTime: "0:45",
+            percentComplete: 0.25,
             onSeeVideo: {}
         )
         
@@ -255,6 +337,9 @@ struct ActiveExerciseCardView: View {
             isOnSetBreak: true,
             remainingBreakTime: 45,
             remainingRegularBreakTime: nil,
+            progressText: "Exercise 1 of 4",
+            elapsedTime: "1:15",
+            percentComplete: 0.5,
             onSeeVideo: {}
         )
         
@@ -265,6 +350,9 @@ struct ActiveExerciseCardView: View {
             isOnSetBreak: false,
             remainingBreakTime: nil,
             remainingRegularBreakTime: 90,
+            progressText: "Exercise 2 of 4",
+            elapsedTime: "2:30",
+            percentComplete: 0.75,
             onSeeVideo: {}
         )
     }
