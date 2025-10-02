@@ -1,5 +1,89 @@
 # Changelog
 
+## 2025-10-02 - Theme Refinements & YouTube Player Improvements
+
+### Changed
+- **Theme Colors App-Wide**: Comprehensive color system overhaul for consistency
+  - Fixed `ActiveExerciseCardView` info card to use `Color.appBackground` instead of semi-transparent overlay
+  - Removed glass effect (`.ultraThinMaterial`) for cleaner, flatter design
+  - Updated all text colors to use semantic colors (`.textPrimary`, `.textSecondary`, `.textTertiary`)
+  - Removed spacing between info card and progress line for unified appearance
+  
+- **Tab Bar Styling**: Enhanced custom tab bar implementation
+  - Selected tab now uses `Color.appBackground` for proper contrast against `cardBackground` container
+  - Tab bar container uses `cardBackground` with subtle shadow
+  - Unselected tabs use `.textSecondary` for better visual hierarchy
+  - Removed inverted color scheme complexity
+  
+- **Workout Builder Cards**: Cleaner design without drag handles
+  - Removed drag handle icons from `WorkoutItemCardView` and `BreakCardView`
+  - Cards remain fully draggable (entire card is the drag target)
+  - Updated to use theme-aware colors (`cardBackground`, `textPrimary`, `textSecondary`)
+  - Added proper shadows using `Color.shadowStandard`
+  - Fixed color consistency across light and dark modes
+  
+- **Background Colors in Sheets**: Fixed transparent background issues
+  - `WorkoutExecutionView`: Added `Color.appBackground` to prevent transparency
+  - `CompletionSummaryView`: Updated gradient and text colors to use theme colors
+  - `OnboardingView`: Changed from hardcoded colors to `Color.appBackground`
+  - All stat cards now use `Color.cardBackground`
+  
+- **Card Style Helpers**: Updated extension methods
+  - `cardStyle()` now defaults to `Color.cardBackground` instead of static `.lightCard`
+  - `borderedCardStyle()` uses `Color.cardBackground` and theme-aware shadows
+  - Updated `ExerciseCardView` placeholder colors to use `.border` and `.textTertiary`
+  
+- **YouTube Video Button**: Improved UX and positioning
+  - Repositioned to bottom-right corner of exercise image as overlay
+  - Reduced size: compact design with play icon + "Video" text
+  - Smaller font sizes (12pt icon, 14pt text) with minimal padding (12x8)
+  - Maintained red background (#FF0000) for YouTube brand consistency
+  
+- **YouTube Player**: Major upgrade from Safari view to embedded player
+  - Replaced `SFSafariViewController` with `WKWebView` for native embedding
+  - Created `YouTubeBottomSheet` component with fixed height (320px)
+  - Shows only video player without YouTube page chrome
+  - Supports multiple URL formats (youtube.com/watch, youtu.be, embed)
+  - 16:9 responsive iframe with proper aspect ratio
+  - Bottom sheet presentation with handle bar and close button
+  - Parameters: `playsinline=1`, `autoplay=0`, `rel=0`, `modestbranding=1`
+
+### Fixed
+- Color inconsistencies across light and dark themes
+- Transparent backgrounds in sheet presentations
+- Text visibility issues with wrong color combinations
+- Card styling inconsistencies between different views
+
+### Technical Details
+- All views now use semantic color system from `AppColors.swift`
+- Consistent use of `.textPrimary`, `.textSecondary`, `.textTertiary`
+- All cards use `.cardBackground` for proper theme adaptation
+- WKWebView configuration: disabled scrolling, black background
+- Video ID extraction supports multiple YouTube URL patterns
+
+### Documentation
+- Updated `tasks.md` with completed tasks T066-T072
+- Added new theme refinement section to Phase 3.10
+- Updated task count from 65 to 81 tasks
+- Marked 72 tasks as completed
+
+### Files Modified
+- `Gymtastic/Execution/Views/Components/ActiveExerciseCardView.swift` - Theme colors and video button positioning
+- `Gymtastic/ContentView.swift` - Tab bar styling and colors
+- `Gymtastic/Workouts/Views/Components/WorkoutItemCardView.swift` - Removed drag handles, theme colors
+- `Gymtastic/Workouts/Views/Components/BreakCardView.swift` - Removed drag handles, theme colors
+- `Gymtastic/Workouts/Views/WorkoutBuilderView.swift` - Updated button colors
+- `Gymtastic/Workouts/Views/WorkoutTimelineView.swift` - Updated button colors
+- `Gymtastic/Execution/Views/WorkoutExecutionView.swift` - Background colors, YouTube bottom sheet
+- `Gymtastic/Execution/Views/CompletionSummaryView.swift` - Theme colors throughout
+- `Gymtastic/Common/Views/OnboardingView.swift` - Background and text colors
+- `Gymtastic/Common/Views/YouTubePlayerView.swift` - WKWebView implementation, bottom sheet
+- `Gymtastic/Common/Extensions/View+Extensions.swift` - Card style helpers
+- `Gymtastic/Exercises/Views/Components/ExerciseCardView.swift` - Theme colors
+- `specs/001-i-am-building/tasks.md` - Documentation updates
+
+---
+
 ## 2025-10-02 - Custom Tab Bar with Theme Support
 
 ### Changed
