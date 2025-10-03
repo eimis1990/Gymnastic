@@ -22,11 +22,15 @@ struct ContentView: View {
                 Group {
                     switch selectedTab {
                     case 0:
-                        ExercisesTabView()
+                        HomeTabView()
                     case 1:
-                        WorkoutsTabView()
-                    default:
                         ExercisesTabView()
+                    case 2:
+                        WorkoutsTabView()
+                    case 3:
+                        ProfileTabView()
+                    default:
+                        HomeTabView()
                     }
                 }
             }
@@ -35,6 +39,7 @@ struct ContentView: View {
             CustomTabBar(selectedTab: $selectedTab)
         }
         .ignoresSafeArea(.keyboard)
+        .background(Color.appBackground)
     }
 }
 
@@ -45,22 +50,40 @@ struct CustomTabBar: View {
     
     var body: some View {
         HStack(spacing: 8) {
+            // Home Tab
+            TabBarButton(
+                icon: "house.fill",
+                title: "Home",
+                isSelected: selectedTab == 0
+            ) {
+                selectedTab = 0
+            }
+            
             // Exercises Tab
             TabBarButton(
                 icon: "dumbbell.fill",
                 title: "Exercises",
-                isSelected: selectedTab == 0
+                isSelected: selectedTab == 1
             ) {
-                selectedTab = 0
+                selectedTab = 1
             }
             
             // Workouts Tab
             TabBarButton(
                 icon: "list.bullet.rectangle.fill",
                 title: "Workouts",
-                isSelected: selectedTab == 1
+                isSelected: selectedTab == 2
             ) {
-                selectedTab = 1
+                selectedTab = 2
+            }
+            
+            // Profile Tab
+            TabBarButton(
+                icon: "person.fill",
+                title: "Profile",
+                isSelected: selectedTab == 3
+            ) {
+                selectedTab = 3
             }
         }
         .padding(.horizontal, 8)
@@ -69,7 +92,7 @@ struct CustomTabBar: View {
         .cornerRadius(40)
         .shadow(color: Color.shadowStandard, radius: 8, x: 0, y: -2)
         .padding(.horizontal, 20)
-        .padding(.bottom, 20)
+        .padding(.bottom, 0)
     }
 }
 
@@ -83,24 +106,321 @@ struct TabBarButton: View {
     
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 8) {
+            VStack(spacing: 6) {
                 Image(systemName: icon)
-                    .font(.system(size: 20, weight: .medium))
+                    .font(.system(size: 24, weight: .medium))
+                    .foregroundColor(isSelected ? .textPrimary : .textSecondary)
                 
-                if isSelected {
-                    Text(title)
-                        .font(.system(size: 15, weight: .medium))
-                }
+                // Dot indicator
+                Circle()
+                    .fill(isSelected ? Color.gymAccent : Color.clear)
+                    .frame(width: 5, height: 5)
             }
-            .foregroundColor(isSelected ? .textPrimary : .textSecondary)
             .frame(maxWidth: .infinity)
             .frame(height: 50)
-            .background(
-                isSelected ? Color.appBackground : Color.clear
-            )
-            .cornerRadius(25)
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// MARK: - Home Tab
+
+struct HomeTabView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \Workout.updatedAt, order: .reverse) private var workouts: [Workout]
+    @State private var searchText = ""
+    @State private var selectedWorkout: Workout?
+    
+    var favoriteWorkouts: [Workout] {
+        // For now, just return first 3 workouts. Later we can add a favorite flag
+        Array(workouts.prefix(3))
+    }
+    
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Header with Profile Image and Greeting
+                    HStack(spacing: 16) {
+                        // Profile Image
+                        Circle()
+                            .fill(Color.gymAccent.opacity(0.3))
+                            .frame(width: 60, height: 60)
+                            .overlay(
+                                Image(systemName: "person.fill")
+                                    .font(.system(size: 28))
+                                    .foregroundColor(.gymAccent)
+                            )
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Good Morning")
+                                .font(.subheadline)
+                                .foregroundColor(.textSecondary)
+                            Text("Hi Alexa")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.textPrimary)
+                        }
+                        
+                        Spacer()
+                        
+                        // Notification Bell
+                        Button {
+                            // TODO: Show notifications
+                        } label: {
+                            ZStack(alignment: .topTrailing) {
+                                Image(systemName: "bell.fill")
+                                    .font(.title2)
+                                    .foregroundColor(.textPrimary)
+                                
+                                Circle()
+                                    .fill(Color.red)
+                                    .frame(width: 10, height: 10)
+                                    .offset(x: 2, y: -2)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+                    
+                    // Search Bar
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.textSecondary)
+                        
+                        TextField("Search", text: $searchText)
+                            .foregroundColor(.textPrimary)
+                        
+                        Spacer()
+                        
+                        Button {
+                            // TODO: Open filters
+                        } label: {
+                            Image(systemName: "slider.horizontal.3")
+                                .foregroundColor(.textPrimary)
+                        }
+                    }
+                    .padding()
+                    .background(Color.cardBackground)
+                    .cornerRadius(12)
+                    .padding(.horizontal, 20)
+                    
+                    // Quick Actions
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 16) {
+                            QuickActionButton(icon: "dumbbell.fill", title: "Strength", selectedTab: 1)
+                            QuickActionButton(icon: "figure.run", title: "Cardio", selectedTab: 2)
+                            QuickActionButton(icon: "figure.mind.and.body", title: "Yoga", selectedTab: 2)
+                            QuickActionButton(icon: "figure.strengthtraining.traditional", title: "Weight", selectedTab: 1)
+                            QuickActionButton(icon: "sportscourt.fill", title: "Sports", selectedTab: 2)
+                        }
+                        .padding(.horizontal, 20)
+                    }
+                    
+                    // Promotional Card
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("25%")
+                                    .font(.system(size: 32, weight: .bold))
+                                    .foregroundColor(.textPrimary)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background(Color.appBackground)
+                                    .cornerRadius(12)
+                                
+                                Text("Off your first session!")
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                                
+                                Button {
+                                    // TODO: Get started action
+                                } label: {
+                                    Text("Get Started")
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 20)
+                                        .padding(.vertical, 10)
+                                        .background(Color.black.opacity(0.3))
+                                        .cornerRadius(20)
+                                }
+                                .padding(.top, 4)
+                            }
+                            
+                            Spacer()
+                        }
+                        .padding(20)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 200)
+                        .background(
+                            LinearGradient(
+                                colors: [Color.gymAccent.opacity(0.8), Color.gymAccent.opacity(0.6)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .cornerRadius(16)
+                        .shadow(color: Color.shadowStandard, radius: 8, x: 0, y: 4)
+                    }
+                    .padding(.horizontal, 20)
+                    
+                    // Favorite Workouts Section
+                    VStack(alignment: .leading, spacing: 16) {
+                        HStack {
+                            Text("Favorite Workouts")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(.textPrimary)
+                            
+                            Spacer()
+                            
+                            Button {
+                                // TODO: Navigate to all workouts
+                            } label: {
+                                Text("See all")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gymAccent)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        
+                        if favoriteWorkouts.isEmpty {
+                            VStack(spacing: 12) {
+                                Image(systemName: "heart.fill")
+                                    .font(.system(size: 40))
+                                    .foregroundColor(.textSecondary)
+                                
+                                Text("No favorite workouts yet")
+                                    .font(.subheadline)
+                                    .foregroundColor(.textSecondary)
+                                
+                                Text("Start creating workouts to see them here")
+                                    .font(.caption)
+                                    .foregroundColor(.textSecondary)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 40)
+                        } else {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    ForEach(favoriteWorkouts) { workout in
+                                        Button {
+                                            selectedWorkout = workout
+                                        } label: {
+                                            FavoriteWorkoutCard(workout: workout)
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal, 20)
+                            }
+                        }
+                    }
+                    .padding(.bottom, 20)
+                }
+            }
+            .background(Color.appBackground)
+            .navigationBarHidden(true)
+            .sheet(item: $selectedWorkout) { workout in
+                WorkoutDetailView(workout: workout, modelContext: modelContext)
+            }
+        }
+    }
+}
+
+// MARK: - Quick Action Button
+
+struct QuickActionButton: View {
+    let icon: String
+    let title: String
+    let selectedTab: Int
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Circle()
+                .fill(Color.cardBackground)
+                .frame(width: 60, height: 60)
+                .overlay(
+                    Image(systemName: icon)
+                        .font(.system(size: 24))
+                        .foregroundColor(.textPrimary)
+                )
+            
+            Text(title)
+                .font(.caption)
+                .foregroundColor(.textPrimary)
+        }
+    }
+}
+
+// MARK: - Favorite Workout Card
+
+struct FavoriteWorkoutCard: View {
+    let workout: Workout
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Mock image placeholder
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.gymAccent.opacity(0.3))
+                .frame(width: 180, height: 120)
+                .overlay(
+                    Image(systemName: "dumbbell.fill")
+                        .font(.system(size: 40))
+                        .foregroundColor(.gymAccent)
+                )
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(workout.title)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.textPrimary)
+                    .lineLimit(1)
+                
+                HStack(spacing: 8) {
+                    Label("\(workout.items.count)", systemImage: "dumbbell.fill")
+                        .font(.caption2)
+                        .foregroundColor(.textSecondary)
+                    
+                    Label(workout.estimatedDurationFormatted, systemImage: "clock")
+                        .font(.caption2)
+                        .foregroundColor(.textSecondary)
+                }
+            }
+        }
+        .frame(width: 180)
+    }
+}
+
+// MARK: - Profile Tab
+
+struct ProfileTabView: View {
+    var body: some View {
+        NavigationStack {
+            VStack {
+                Spacer()
+                
+                Image(systemName: "person.circle.fill")
+                    .font(.system(size: 80))
+                    .foregroundColor(.gymAccent)
+                
+                Text("Profile")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.textPrimary)
+                    .padding(.top, 16)
+                
+                Text("Coming Soon")
+                    .font(.subheadline)
+                    .foregroundColor(.textSecondary)
+                
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.appBackground)
+            .navigationTitle("Profile")
+        }
     }
 }
 
@@ -322,53 +642,57 @@ struct WorkoutDetailView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Stats
-                    HStack(spacing: 20) {
-                        StatItem(icon: "dumbbell.fill", value: "\(workout.items.count)", label: "Exercises")
-                        StatItem(icon: "timer", value: "\(workout.breaks.count)", label: "Breaks")
-                        StatItem(icon: "clock", value: workout.estimatedDurationFormatted, label: "Duration")
-                    }
-                    .padding()
-                    
-                    // Timeline Preview
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Workout Timeline")
-                            .font(.headline)
-                            .padding(.horizontal)
+            VStack(spacing: 0) {
+                // Main Content
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Stats
+                        HStack(spacing: 20) {
+                            StatItem(icon: "dumbbell.fill", value: "\(workout.items.count)", label: "Exercises")
+                            StatItem(icon: "timer", value: "\(workout.breaks.count)", label: "Breaks")
+                            StatItem(icon: "clock", value: workout.estimatedDurationFormatted, label: "Duration")
+                        }
+                        .padding()
                         
-                        ForEach(workout.orderedSequence, id: \.id) { item in
-                            switch item {
-                            case .exercise(let workoutItem):
-                                WorkoutItemCardView(item: workoutItem)
-                                    .padding(.horizontal)
-                            case .break(let breakItem):
-                                BreakCardView(breakItem: breakItem)
-                                    .padding(.horizontal)
+                        // Timeline Preview
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Workout Timeline")
+                                .font(.headline)
+                                .padding(.horizontal)
+                            
+                            ForEach(workout.orderedSequence, id: \.id) { item in
+                                switch item {
+                                case .exercise(let workoutItem):
+                                    WorkoutItemCardView(item: workoutItem)
+                                        .padding(.horizontal)
+                                case .break(let breakItem):
+                                    BreakCardView(breakItem: breakItem)
+                                        .padding(.horizontal)
+                                }
                             }
                         }
                     }
-                    
-                    // Start Button
-                    Button {
-                        showExecutionView = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "play.fill")
-                            Text("Start Workout")
-                                .fontWeight(.semibold)
-                        }
-                        .foregroundColor(.black)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.gymAccent)
-                        .cornerRadius(12)
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 20)
+                    .padding(.vertical)
                 }
-                .padding(.vertical)
+                
+                // Start Button
+                Button {
+                    showExecutionView = true
+                } label: {
+                    HStack {
+                        Image(systemName: "play.fill")
+                        Text("Start Workout")
+                            .fontWeight(.semibold)
+                    }
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.gymAccent)
+                    .cornerRadius(12)
+                    .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 20)
             }
             .navigationTitle(workout.title)
             .navigationBarTitleDisplayMode(.large)

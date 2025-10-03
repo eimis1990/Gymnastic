@@ -62,7 +62,7 @@
 - [x] **T008** [P] Create `.gitignore` for Xcode project: exclude `*.xcuserstate`, `DerivedData/`, `.DS_Store`, `*.swp` ✅
 
 ### UI Refinements
-- [x] **T056** [P] [UI] Update color scheme: Change accent color to lime green (#C8F065), add light theme colors (background: #F7F6FB, card: white), add dark theme colors (background: #1A1F25, card: #3A3F45), update all views to use new colors ✅
+- [x] **T056** [P] [UI] Update color scheme: Change accent color to lime green (#C8F065), add light theme colors (background: #F7F6FB, card: white), add dark theme colors (background: #1A1F25, card: #2B2B2B), update all views to use new colors ✅
 
 - [x] **T057** [P] [UI] Create `Common/Views/OnboardingView.swift`: Build welcome/get started screen with hero image, motivational text "Wherever You Are Health Is Number One", and "Get Started" button that saves completion flag to UserDefaults ✅
 
@@ -213,6 +213,12 @@
 
 ### Navigation & Main App
 - [x] **T055** [INT] Create `Gymtastic/ContentView.swift`: TabView with 2 tabs (Exercises, Workouts), SF Symbol icons (dumbbell.fill, list.bullet.rectangle), NavigationStack for each tab, proper tab labels with .accessibilityLabel() ✅
+
+- [x] **T082** [UI] Expand `ContentView.swift` with Home tab: Add 4-tab navigation (Home, Exercises, Workouts, Profile), redesign tab bar to icon-only with accent dot indicator for active tab, create HomeTabView with profile header, search bar, quick action buttons, promotional card, and favorite workouts section ✅
+
+- [x] **T083** [UI] Create ProfileTabView placeholder in `ContentView.swift`: Simple empty state with person icon, "Profile" title, "Coming Soon" message, properly styled with theme colors ✅
+
+- [x] **T084** [UI] Update tab bar design in `ContentView.swift`: Remove text labels, show only icons, add small accent-colored dot indicator under active tab icon, increase icon size for better visibility ✅
 
 - [ ] **T056** [INT] Update `Gymtastic/GymtasticApp.swift`: Inject services into environment using @Environment, provide ExerciseService, WorkoutService, ExecutionService instances, ensure ModelContainer is accessible
 
@@ -458,9 +464,9 @@ Upon completion of all 65 tasks:
 ---
 
 **Generated**: 2025-10-01  
-**Updated**: 2025-10-02  
-**Total Tasks**: 81  
-**Completed**: 72  
+**Updated**: 2025-10-03  
+**Total Tasks**: 84  
+**Completed**: 75  
 **Estimated Duration**: 18-22 development days (single developer)  
 **Parallelization**: Up to 6 tasks simultaneously in optimal batches
 

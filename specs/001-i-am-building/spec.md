@@ -156,9 +156,22 @@ As a fitness enthusiast, I want to create custom workouts from my own exercise l
 - **FR-047**: System MUST display an onboarding/welcome screen on first app launch with motivational messaging and "Get Started" call-to-action
 - **FR-048**: System MUST use lime green (#C8F065) as the primary accent color throughout the app for buttons, highlights, and interactive elements
 - **FR-049**: System MUST provide a light theme with background color #F7F6FB and white cards for clean, modern appearance
-- **FR-050**: System MUST provide a dark theme with background color #1A1F25 and card color #3A3F45 for reduced eye strain in low-light conditions
+- **FR-050**: System MUST provide a dark theme with background color #1A1F25 and card color #2B2B2B for reduced eye strain in low-light conditions
 - **FR-051**: System MUST automatically adapt UI colors based on system theme preference (light/dark mode)
 - **FR-052**: System MUST save user's onboarding completion status to prevent showing welcome screen on subsequent launches
+- **FR-053**: System MUST provide a Home screen as the default landing screen with quick access to key features
+- **FR-054**: System MUST display a personalized greeting header on Home screen with profile image placeholder and "Good Morning" message
+- **FR-055**: System MUST provide a search bar on Home screen for quick exercise/workout lookup with filter button
+- **FR-056**: System MUST display quick action buttons on Home screen for common workout categories (Strength, Cardio, Yoga, Weight, Sports) in a horizontal scrollable row
+- **FR-057**: System MUST show a promotional card on Home screen with engaging visuals and call-to-action button
+- **FR-058**: System MUST display a "Favorite Workouts" section on Home screen showing up to 3 recently updated workouts in a horizontal scrollable list
+- **FR-059**: System MUST show workout thumbnails, titles, exercise count, and duration for each favorite workout card
+- **FR-060**: System MUST display an empty state message in Favorite Workouts section when no workouts exist
+- **FR-061**: System MUST provide a notification bell icon in Home screen header with unread indicator badge
+- **FR-062**: System MUST include a Profile tab in main navigation with placeholder for future profile features
+- **FR-063**: System MUST display tab bar navigation with 4 tabs (Home, Exercises, Workouts, Profile) using icon-only design
+- **FR-064**: System MUST indicate active tab with darker icon color and small accent-colored dot below the icon
+- **FR-065**: System MUST use SF Symbols for tab icons (house.fill, dumbbell.fill, list.bullet.rectangle.fill, person.fill)
 
 ### Key Entities *(include if feature involves data)*
 
@@ -202,10 +215,11 @@ As a fitness enthusiast, I want to create custom workouts from my own exercise l
 - [x] Key concepts extracted
 - [x] Ambiguities marked and resolved (14 clarifications answered with iOS best practices)
 - [x] User scenarios defined
-- [x] Requirements generated (52 functional requirements)
+- [x] Requirements generated (65 functional requirements)
 - [x] Entities identified (5 key entities)
 - [x] Review checklist passed (all clarifications resolved)
 - [x] UI refinements added (onboarding flow, new color scheme)
+- [x] Home screen and navigation enhancements (4-tab navigation, dashboard features)
 
 ---
 

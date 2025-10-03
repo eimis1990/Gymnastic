@@ -1,5 +1,69 @@
 # Changelog
 
+## 2025-10-03 - Home Screen & Navigation Enhancement
+
+### Added
+- **Home Screen**: New dashboard-style landing screen with multiple sections
+  - **Profile Header**: Greeting message ("Good Morning", "Hi Alexa") with profile avatar placeholder and notification bell with red dot indicator
+  - **Search Bar**: Quick search input with magnifying glass icon and filter button
+  - **Quick Actions**: Horizontal scrollable row with 5 category buttons (Strength, Cardio, Yoga, Weight, Sports)
+  - **Promotional Card**: Eye-catching gradient card with "25% Off your first session!" message and "Get Started" CTA button
+  - **Favorite Workouts Section**: Displays up to 3 recently updated workouts in horizontal scrollable cards
+    - Each card shows workout thumbnail, title, exercise count, and duration
+    - Empty state message when no workouts exist ("No favorite workouts yet")
+    - "See all" link for navigation to full workout list
+  - Tapping favorite workout cards opens full workout detail sheet
+  
+- **Profile Tab**: Placeholder tab for future profile features
+  - Simple empty state with person icon
+  - "Profile" title and "Coming Soon" message
+  - Properly themed colors and styling
+
+- **4-Tab Navigation**: Expanded from 2 tabs to 4 tabs
+  - Home (house.fill icon) - new default tab
+  - Exercises (dumbbell.fill icon)
+  - Workouts (list.bullet.rectangle.fill icon)
+  - Profile (person.fill icon) - new placeholder tab
+
+### Changed
+- **Tab Bar Design**: Complete redesign to icon-only approach
+  - Removed text labels from all tabs
+  - Icons increased from 20pt to 24pt for better visibility
+  - Active tab indicated by darker icon color (`.textPrimary`)
+  - Inactive tabs use light gray (`.textSecondary`)
+  - Small accent-colored dot (5pt) appears below active tab icon
+  - Removed background color difference between tabs
+  - Cleaner, more modern appearance
+  - Bottom padding reduced to 0 for edge-to-edge design
+
+- **Tab Bar Spacing**: Adjusted positioning
+  - Reduced bottom padding from 20pt to 0pt
+  - Tab bar sits closer to bottom edge of screen
+
+### Technical Details
+- `HomeTabView` component with sections: header, search, quick actions, promo card, favorites
+- `QuickActionButton` component for category buttons
+- `FavoriteWorkoutCard` component for workout preview cards
+- `ProfileTabView` component with empty state
+- Tab bar updated to VStack layout with dot indicator Circle view
+- Home screen uses SwiftData @Query to fetch workouts for favorites
+- All components use semantic color system (`.appBackground`, `.cardBackground`, `.textPrimary`, `.gymAccent`)
+
+### Documentation
+- Updated `spec.md` with 13 new functional requirements (FR-053 through FR-065)
+- Updated `tasks.md` with 3 new tasks (T082-T084) for Home and Profile implementation
+- Updated requirement count from 52 to 65 functional requirements
+- Updated task count from 81 to 84 tasks
+- Updated completed task count from 72 to 75 tasks
+- Added "Home screen and navigation enhancements" to execution status
+
+### Files Modified
+- `Gymtastic/ContentView.swift` - Added HomeTabView, ProfileTabView, updated tab bar design, expanded to 4 tabs
+- `specs/001-i-am-building/spec.md` - Added FR-053 through FR-065, updated execution status
+- `specs/001-i-am-building/tasks.md` - Added T082-T084, updated counts and date
+
+---
+
 ## 2025-10-02 - Theme Refinements & YouTube Player Improvements
 
 ### Changed

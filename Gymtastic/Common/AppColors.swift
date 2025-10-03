@@ -41,17 +41,17 @@ extension Color {
     // MARK: - Surface/Card Colors
     
     /// Card and surface background color - adapts to theme
-    /// Light Mode: #FFFFFF (White) | Dark Mode: #3A3F45 (Dark gray)
+    /// Light Mode: #FFFFFF (White) | Dark Mode: #2B2B2B (Dark gray)
     /// Used for: Cards, panels, elevated surfaces, content containers
     static var cardBackground: Color {
-        Color(light: .white, dark: Color(hex: "3A3F45"))
+        Color(light: .white, dark: Color(hex: "2B2B2B"))
     }
     
     /// Light theme card color
     static let lightCard = Color.white
     
     /// Dark theme card color
-    static let darkCard = Color(hex: "3A3F45")
+    static let darkCard = Color(hex: "2B2B2B")
     
     // MARK: - Text Colors
     
@@ -147,9 +147,9 @@ extension Color {
     }
     
     /// Tab bar selected item background
-    /// Light Mode: #3A3F45 (Dark gray) | Dark Mode: White
+    /// Light Mode: #2B2B2B (Dark gray) | Dark Mode: White
     static var tabBarSelectedBackground: Color {
-        Color(light: Color(hex: "3A3F45"), dark: .white)
+        Color(light: Color(hex: "2B2B2B"), dark: .white)
     }
     
     /// Tab bar selected text color
@@ -159,9 +159,9 @@ extension Color {
     }
     
     /// Tab bar unselected text color
-    /// Light Mode: #F7F6FB (Light) | Dark Mode: #3A3F45 (Dark gray)
+    /// Light Mode: #F7F6FB (Light) | Dark Mode: #2B2B2B (Dark gray)
     static var tabBarUnselectedText: Color {
-        Color(light: Color(hex: "F7F6FB"), dark: Color(hex: "3A3F45"))
+        Color(light: Color(hex: "F7F6FB"), dark: Color(hex: "2B2B2B"))
     }
     
     // MARK: - Component-Specific Colors
@@ -253,7 +253,7 @@ extension Color {
             // Tab Bar Colors
             ColorSection(title: "Tab Bar (Inverted)") {
                 ColorSwatch(name: "tabBarBackground", color: Color(hex: "0E0E0E"), hex: "#0E0E0E")
-                ColorSwatch(name: "tabBarSelectedBg", color: Color(hex: "3A3F45"), hex: "#3A3F45")
+                ColorSwatch(name: "tabBarSelectedBg", color: Color(hex: "2B2B2B"), hex: "#2B2B2B")
                 ColorSwatch(name: "tabBarSelectedText", color: .white, hex: "White")
                 ColorSwatch(name: "tabBarUnselectedText", color: Color(hex: "F7F6FB"), hex: "#F7F6FB")
             }
@@ -275,7 +275,7 @@ extension Color {
             // Backgrounds
             ColorSection(title: "Backgrounds") {
                 ColorSwatch(name: "appBackground", color: .darkBackground, hex: "#0E0E0E")
-                ColorSwatch(name: "cardBackground", color: .darkCard, hex: "#3A3F45")
+                ColorSwatch(name: "cardBackground", color: .darkCard, hex: "#2B2B2B")
             }
             
             // Text Colors
@@ -298,7 +298,7 @@ extension Color {
                 ColorSwatch(name: "tabBarBackground", color: Color(hex: "F7F6FB"), hex: "#F7F6FB")
                 ColorSwatch(name: "tabBarSelectedBg", color: .white, hex: "White")
                 ColorSwatch(name: "tabBarSelectedText", color: Color(hex: "0E0E0E"), hex: "#0E0E0E")
-                ColorSwatch(name: "tabBarUnselectedText", color: Color(hex: "3A3F45"), hex: "#3A3F45")
+                ColorSwatch(name: "tabBarUnselectedText", color: Color(hex: "2B2B2B"), hex: "#2B2B2B")
             }
         }
         .padding()
